@@ -1,16 +1,12 @@
-FROM openshift/ruby-20-centos
-
-RUN gem install sinatra sinatra-activerecord mysql2 --no-ri --no-rdoc
-
-ADD . /tmp/
-USER root
-RUN chown -R ruby:ruby /tmp/*
-
-USER ruby
-WORKDIR /tmp/
-
+FROM openshift/ruby-20-centos7
+USER default
+EXPOSE 8080
 ENV RACK_ENV production
 ENV RAILS_ENV production
+COPY . /opt/app-root/src/
+RUN scl enable ror40 "bundle install"
+CMD ["scl", "enable", "ror40", "./run.sh"]
 
-EXPOSE 8080
-CMD ["ruby", "app.rb"]
+USER root
+RUN chmod og+rw /opt/app-root/src/db
+USER default

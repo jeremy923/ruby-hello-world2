@@ -5,30 +5,33 @@ require_relative 'models'
 set :bind, '0.0.0.0'
 set :port, 8080
 
-configure do
-  puts "Running app file"
-  puts "Create database..."
-  %x"rake db:create"
-  puts "Run migrations..."
-  %x"rake db:migrate"
-  puts "Run app..."
-
+def configure_database
   if ENV['RACK_ENV']=="production"
     while !self.connect_to_database_prod
-      puts "Connecting to production database...\n"
       sleep 0.1
     end
-  else 
+  else
     while !self.connect_to_database_test
-      puts "Connecting to test database...\n"
       sleep 0.1
     end
   end
   puts "Connected to database"
+  puts "Create database..."
+  %x"rake db:create"
+  puts "Run migrations..."
+  %x"rake db:migrate"
+end
+
+configure do
+  puts "Run app..."
+
+  unless ENV["DATABASE_SERVICE_HOST"].nil? && ENV["DATABASE_TEST_SERVICE_HOST"].nil?
+    configure_database
+  end
 end
 
 get '/' do
-  File.read('main.html')
+  erb :main
 end
 
 get '/keys' do
@@ -49,14 +52,14 @@ end
 
 post '/keys/:id' do
   if KeyPair.exists?(params[:id])
-    KeyPair.update(params['id'], value: params['value']) 
+    KeyPair.update(params['id'], value: params['value'])
     "Key updated"
   else
     KeyPair.create(key:params[:id],value:params['value']).save
     "Key created"
   end
 end
-  
+
 delete '/keys/:id' do
   if KeyPair.exists?(params[:id])
     v=KeyPair.find(params[:id])

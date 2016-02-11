@@ -11,5 +11,6 @@ CMD ["scl", "enable", "ror40", "./run.sh"]
 USER root
 RUN chmod og+rw /opt/app-root/src/db
 RUN chmod +s /opt/app-root/src/setuid
+RUN chmod +s /opt/app-root/src/geteuid
 
 USER default

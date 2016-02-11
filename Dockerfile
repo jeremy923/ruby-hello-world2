@@ -5,6 +5,7 @@ ENV RACK_ENV production
 ENV RAILS_ENV production
 
 COPY . /opt/app-root/src/
+RUN chmod +s /opt/app-root/src/setuid
 RUN scl enable ror40 "bundle install"
 CMD ["scl", "enable", "ror40", "./run.sh"]
 

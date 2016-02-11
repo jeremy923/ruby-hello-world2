@@ -4,4 +4,4 @@ EXPOSE 8080
 ENV RACK_ENV production
 ENV RAILS_ENV production
 
-ENTRYPOINT /bin/bash
+CMD /bin/bash
